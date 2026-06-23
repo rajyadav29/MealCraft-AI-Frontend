@@ -10,7 +10,7 @@ const Footer = () => {
   className="bg-slate-50 dark:bg-slate-900 border-t border-slate-200/50 dark:border-slate-900 ..."
 >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-8">
           {/* Brand Info */}
           <div className="space-y-4 md:col-span-2">
             <Link to="/" className="flex items-center gap-2">
@@ -48,9 +48,11 @@ const Footer = () => {
             </ul>
           </div>
 
+          
+
           {/* Legal / Social */}
           <div>
-            <h4 className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-4">
+            <h4 className="text-slate-400 uppercase tracking-wide text-sm font-bold mb-6">
               Resources
             </h4>
             <ul className="space-y-5 text-slate-900 dark:text-slate-200">
@@ -69,6 +71,35 @@ const Footer = () => {
 
               </ul>
           </div>
+
+          {/* Why MealCraft AI */}
+            <div>
+              <h3 className="text-slate-400 uppercase tracking-wide text-sm font-bold mb-6">
+               Why MealCraft AI?
+              </h3>
+              <ul className="space-y-5 text-slate-900 dark:text-slate-200">
+
+                <li className="transition-all duration-300 hover:text-teal-500 hover:translate-x-1 cursor-pointer">
+                 1000+ Recipes Generated
+                </li>
+                
+                <li className="transition-all duration-300 hover:text-teal-500 hover:translate-x-1 cursor-pointer">
+                  500+ Active users
+                </li>
+                
+
+                <li className="transition-all duration-300 hover:text-teal-500 hover:translate-x-1 cursor-pointer">
+                  100+ Meals Plan Created
+                </li>
+                
+
+                <li className="transition-all duration-300 hover:text-teal-500 hover:translate-x-1 cursor-pointer">
+                  AI Personalized Suggestions
+              </li>
+
+              </ul>
+     
+            </div>
         </div>
 
 

@@ -8,6 +8,7 @@ import ProtectedRoute from './routes/ProtectedRoute';
 import Loader from './components/Loader';
 import ErrorBoundary from './components/ErrorBoundary';
 
+
 // Lazy loading pages for optimized bundle size & code splitting
 const LandingPage = lazy(() => import('./pages/LandingPage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
@@ -16,6 +17,7 @@ const DashboardPage = lazy(() => import('./pages/DashboardPage'));
 const RecipeGeneratorPage = lazy(() => import('./pages/RecipeGeneratorPage'));
 const SavedRecipesPage = lazy(() => import('./pages/SavedRecipesPage'));
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
 
 function App() {
   return (
@@ -55,6 +57,7 @@ function App() {
                   <Route path="/" element={<LandingPage />} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/register" element={<RegisterPage />} />
+                  <Route path="/contact" element={<ContactPage />} />
 
                   {/* Protected Routes */}
                   <Route

@@ -1,17 +1,36 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { HiMenu, HiX, HiMoon, HiSun, HiOutlineLogout, HiUserCircle } from 'react-icons/hi';
+import { useTranslation } from "react-i18next";
+
+import {
+  HiMenu,
+  HiX,
+  HiMoon,
+  HiSun,
+  HiOutlineLogout,
+  HiUserCircle,
+  HiGlobeAlt,
+  HiChevronDown
+} from 'react-icons/hi';
+
 import Button from './Button';
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem('theme') === 'dark' ||
     (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    
   );
+ const [language, setLanguage] = useState(
+  localStorage.getItem("language") || "English"
+);
+const [languageOpen, setLanguageOpen] = useState(false);
+
 
   // Sync dark mode class with state
   useEffect(() => {
@@ -40,16 +59,17 @@ const Navbar = () => {
 
 const navLinks = isAuthenticated
   ? [
-      { to: '/dashboard', label: 'Dashboard' },
-      { to: '/recipe-generator', label: 'Generator' },
-      { to: '/saved-recipes', label: 'Saved Recipes' },
-      { to: '/profile', label: 'Profile' },
+      { to: '/dashboard', label: t("Dashboard") },
+      { to: '/recipe-generator', label: ("Generator") },
+      { to: '/saved-recipes', label: ("Saved Recipes") },
+      { to: '/profile', label: ("Profile") },
     ]
   : [
-      { href: '/#features', label: 'Features' },
-      { href: '/#how-it-works', label: 'How It Works' },
-      { href: '/#pricing', label: 'Pricing' },
-      { href: '/#contact', label: 'Contact' },
+      { href: '/#features', label: t("features") },
+      { href: '/#how-it-works', label: t("howItWorks") },
+      { href: '/#pricing', label: t("pricing") },
+      { href: '/contact', label: t("contact") },
+      
     ];
 
   return (
@@ -89,54 +109,136 @@ const navLinks = isAuthenticated
 
           {/* Action Area (Theme & Login State) */}
           <div className="hidden md:flex items-center gap-4">
-            {/* Dark Mode toggle */}
+
+            {/* Language Selector */}
+            <div className="relative">
+              <button
+                onClick={() => setLanguageOpen(!languageOpen)}
+                className="flex items-center gap-2 px-4 py-2 rounded-full border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 hover:border-teal-500/40 transition-all duration-300"
+              >
+                <HiGlobeAlt className="text-lg text-slate-500" />
+
+                <span className="text-sm text-slate-700 dark:text-slate-300">
+                  {language}
+                </span>
+
+                <HiChevronDown className="text-sm text-slate-500" />
+              </button>
+
+              {languageOpen && (
+          <div className="absolute right-0 mt-2 w-52 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl overflow-hidden">
+
             <button
-              onClick={() => setDarkMode(!darkMode)}
-              className="p-2 rounded-xl bg-slate-50 dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition-colors cursor-pointer"
-              title="Toggle Dark Mode"
+                 onClick={() => {
+                            i18n.changeLanguage("en");
+                            localStorage.setItem("language", "English");
+                            setLanguage("English");
+                            setLanguageOpen(false);
+                          }}
+              className="w-full text-left px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-800"
             >
-              {darkMode ? <HiSun className="text-xl" /> : <HiMoon className="text-xl" />}
+              🇬🇧 English
             </button>
 
-            {isAuthenticated ? (
-              <div className="flex items-center gap-3">
-                <Link to="/profile" className="flex items-center gap-2 group">
-                  {user?.avatar ? (
-                    <img
-                      src={user.avatar}
-                      alt={user.name}
-                      className="w-8 h-8 rounded-full border border-teal-500 group-hover:scale-105 transition-transform object-cover"
-                    />
-                  ) : (
-                    <HiUserCircle className="text-3xl text-slate-400 group-hover:text-teal-600 transition-colors" />
-                  )}
-                  <span className="text-sm font-medium text-slate-700 dark:text-slate-205 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
-                    {user?.name?.split(' ')[0]}
-                  </span>
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-medium text-red-650 hover:bg-red-50 dark:hover:bg-red-950/20 transition-all border border-transparent hover:border-red-100 dark:hover:border-red-900/30 cursor-pointer"
-                  title="Logout"
-                >
-                  <HiOutlineLogout className="text-lg" />
-                  <span>Logout</span>
-                </button>
-              </div>
-            ) : (
-              <div className="flex items-center gap-2">
-                <Link to="/login">
-                  <Button variant="outline" size="sm">
-                    Login
-                  </Button>
-                </Link>
-                <Link to="/register">
-                  <Button variant="primary" size="sm">
-                    Get Started
-                  </Button>
-                </Link>
-              </div>
-            )}
+            <button
+              onClick={() => {
+                        i18n.changeLanguage("hi");
+                        localStorage.setItem("language", "Hindi");
+                        setLanguage("Hindi");
+                        setLanguageOpen(false);
+                      }}
+              className="w-full text-left px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-800"
+            >
+              🇮🇳 हिन्दी
+            </button>
+
+            <button
+              onClick={() => {
+                        i18n.changeLanguage("de");
+                        localStorage.setItem("language", "German");
+                        setLanguage("German");
+                        setLanguageOpen(false);
+                      }}
+              className="w-full text-left px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-800"
+            >
+              🇩🇪 Deutsch
+            </button>
+
+            <button
+              onClick={() => {
+                        i18n.changeLanguage("es");
+                        localStorage.setItem("language", "Spanish");
+                        setLanguage("Spanish");
+                        setLanguageOpen(false);
+                      }}
+              className="w-full text-left px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-800"
+            >
+              🇪🇸 Español
+            </button>
+
+            <button
+              onClick={() => {
+                        i18n.changeLanguage("zh");
+                        localStorage.setItem("language", "Chinese");
+                        setLanguage("Chinese");
+                        setLanguageOpen(false);
+                      }}
+              className="w-full text-left px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-800"
+            >
+              🇨🇳 中文
+            </button>
+
+          </div>
+        )}
+                    </div>
+                    {/* Dark Mode toggle */}
+                    <button
+                      onClick={() => setDarkMode(!darkMode)}
+                      className="p-2 rounded-xl bg-slate-50 dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition-colors cursor-pointer"
+                      title="Toggle Dark Mode"
+                    >
+                      {darkMode ? <HiSun className="text-xl" /> : <HiMoon className="text-xl" />}
+                    </button>
+
+                    {isAuthenticated ? (
+                      <div className="flex items-center gap-3">
+                        <Link to="/profile" className="flex items-center gap-2 group">
+                          {user?.avatar ? (
+                            <img
+                              src={user.avatar}
+                              alt={user.name}
+                              className="w-8 h-8 rounded-full border border-teal-500 group-hover:scale-105 transition-transform object-cover"
+                            />
+                          ) : (
+                            <HiUserCircle className="text-3xl text-slate-400 group-hover:text-teal-600 transition-colors" />
+                          )}
+                          <span className="text-sm font-medium text-slate-700 dark:text-slate-205 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+                            {user?.name?.split(' ')[0]}
+                          </span>
+                        </Link>
+                        <button
+                          onClick={handleLogout}
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-medium text-red-650 hover:bg-red-50 dark:hover:bg-red-950/20 transition-all border border-transparent hover:border-red-100 dark:hover:border-red-900/30 cursor-pointer"
+                          title="Logout"
+                        >
+                          <HiOutlineLogout className="text-lg" />
+                          <span>Logout</span>
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <Link to="/login">
+                          <Button variant="outline" size="sm">
+                            {t("login")}
+                          </Button>
+                        </Link>
+                        <Link to="/register">
+                          <Button variant="primary" size="sm">
+                           {t("getStarted")}
+                          </Button>
+                        </Link>
+                      </div>
+                    )}
           </div>
 
           {/* Mobile Right Bar (Theme + Hamburger) */}
